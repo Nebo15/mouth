@@ -8,32 +8,38 @@ defmodule Mouth.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      test_coverage: [tool: ExCoveralls],
+     description: description(),
+     package: package(),
      deps: deps()]
   end
 
-  # Configuration for the OTP application
-  #
-  # Type "mix help compile.app" for more information
   def application do
-    # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger]]
+    [applications: [:logger, :hackney]]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:my_dep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:my_dep, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
-  #
-  # Type "mix help deps" for more examples and options
   defp deps do
     [
+      {:hackney, "~> 1.8.6"},
       {:dogma, "~> 0.1", only: :dev},
       {:excoveralls, "~> 0.6", only: :test},
       {:cowboy, "~> 1.0.0", only: :test},
       {:plug, "~> 1.0", only: :test}
+    ]
+  end
+
+  defp description do
+    """
+    Simple adapter based SMS sending library
+    """
+  end
+
+  defp package do
+    [
+      name: :mouth,
+      files: ["lib", "mix.exs", "README*", "readme*", "LICENSE*", "license*"],
+      maintainers: ["Alex Troush"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/nebo15/mouth"}
     ]
   end
 end
