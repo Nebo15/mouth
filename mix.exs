@@ -20,6 +20,7 @@ defmodule Mouth.Mixfile do
   defp deps do
     [
       {:hackney, "~> 1.8.6"},
+      {:ex_doc, ">= 0.0.0", only: :dev},
       {:dogma, "~> 0.1", only: :dev},
       {:excoveralls, "~> 0.6", only: :test},
       {:cowboy, "~> 1.0.0", only: :test},
