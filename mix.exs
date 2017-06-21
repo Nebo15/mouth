@@ -36,7 +36,7 @@ defmodule Mouth.Mixfile do
   defp package do
     [
       name: :mouth,
-      files: ["lib", "mix.exs", "README*", "readme*", "LICENSE*", "license*"],
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Alex Troush"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/nebo15/mouth"}
