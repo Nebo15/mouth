@@ -3,7 +3,7 @@ defmodule Mouth.Mixfile do
 
   def project do
     [app: :mouth,
-     version: "0.1.0",
+     version: "0.2.0",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -14,7 +14,8 @@ defmodule Mouth.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :hackney]]
+    [
+     applications: [:logger, :hackney]]
   end
 
   defp deps do
@@ -24,7 +25,8 @@ defmodule Mouth.Mixfile do
       {:dogma, "~> 0.1", only: :dev},
       {:excoveralls, "~> 0.6", only: :test},
       {:cowboy, "~> 1.0.0", only: :test},
-      {:plug, "~> 1.0", only: :test}
+      {:plug, "~> 1.0", only: :test},
+      {:confex, ">= 0.0.0", only: :test}
     ]
   end
 

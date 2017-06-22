@@ -7,8 +7,8 @@ defmodule Mouth.TestAdapter do
     IO.puts message.body
   end
 
-  def status(_, _) do
-      {:ok}
+  def status(_, config) do
+    IO.puts inspect config
   end
 
   def handle_config(config) do

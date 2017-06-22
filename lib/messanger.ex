@@ -6,21 +6,21 @@ defmodule Mouth.Messanger do
   cannot call Mouth.Messanger directly. Instead implement your own Messanger module
   with: use Mouth.Messanger, otp_app: :my_app
   """
-
   require Logger
 
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts] do
+      @behaviour Mouth.Messanger
 
       @spec deliver(Mouth.Message.t) :: Mouth.Message.t
       def deliver(message) do
         config = build_config()
-        Mouth.Messanger.deliver(config.adapter, message, config)
+        Mouth.Messanger.deliver(message, config)
       end
 
       def status(id) do
         config = build_config()
-        Mouth.Messanger.status(config.adapter, id, config)
+        Mouth.Messanger.status(id, config)
       end
 
       otp_app = Keyword.fetch!(opts, :otp_app)
@@ -28,6 +28,9 @@ defmodule Mouth.Messanger do
       defp build_config, do: Mouth.Messanger.build_config(__MODULE__, unquote(otp_app))
     end
   end
+
+  @optional_callbacks init: 0
+  @callback init() :: {:ok, Keyword.t} | :ignore
 
   @doc false
   def deliver(_message) do
@@ -39,23 +42,23 @@ defmodule Mouth.Messanger do
   end
 
   @doc false
-  def deliver(adapter, message, config) do
-    message = validate_and_normalize(message, adapter)
+  def deliver(message, config) do
+    message = validate_and_normalize(message, config.adapter)
 
     result =
       if message.to == [] do
         debug_unsent(message)
         {:error, "Empty recipient"}
       else
-        debug_sent(message, adapter)
-        adapter.deliver(message, config)
+        debug_sent(message, config.adapter)
+        config.adapter.deliver(message, config)
       end
     result
   end
 
   @doc false
-  def status(adapter, id, config) do
-    adapter.status(id, config)
+  def status(id, config) do
+    config.adapter.status(id, config)
   end
 
   defp debug_sent(message, adapter) do
@@ -102,12 +105,22 @@ defmodule Mouth.Messanger do
 
   def build_config(messanger, otp_app) do
     otp_app
-    |> Application.fetch_env!(messanger)
+    |> get_application_config(messanger)
     |> Map.new
     |> handle_adapter_config
   end
 
   defp handle_adapter_config(base_config = %{adapter: adapter}) do
     adapter.handle_config(base_config)
+  end
+
+  defp get_application_config(otp_app, messanger) do
+    {:ok, config} =
+      if Code.ensure_loaded?(messanger) and function_exported?(messanger, :init, 0) do
+        messanger.init
+      else
+        {:ok, Application.get_env(otp_app, messanger)}
+      end
+    config
   end
 end
