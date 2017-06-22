@@ -1,4 +1,4 @@
-# Mouth [![Build Status](https://travis-ci.org/Nebo15/mouth.svg?branch=master)](https://travis-ci.org/Nebo15/mouth)
+# Mouth [![Build Status](https://travis-ci.org/Nebo15/mouth.svg?branch=master)](https://travis-ci.org/Nebo15/mouth) [![Coverage Status](https://coveralls.io/repos/github/Nebo15/mouth/badge.svg?branch=master)](https://coveralls.io/github/Nebo15/mouth?branch=master)
 ![logo](https://68.media.tumblr.com/avatar_21e0adf52036_128.png "Logo")
 
 Simple adapter based SMS sending library

@@ -2,21 +2,6 @@ defmodule Mouth do
   @moduledoc """
   Documentation for Mouth.
   """
-  # use Application
-
-  # def start(_type, _args) do
-  #   init = Application.get_env(:mouth, :init)
-  #   case init do
-  #     nil -> {:ok, self()}
-  #     init_fun ->
-  #       require IEx
-  #       IEx.pry
-  #       {:ok, config} = apply(init_fun, [])
-  #       Map.keys(config)
-  #       |> Enum.map(fn key -> Application.put_env(:mouth, key, config[key]) end)
-  #       {:ok, self()}
-  #   end
-  # end
   defmodule NilRecipientsError do
     @moduledoc false
     defexception [:message]
