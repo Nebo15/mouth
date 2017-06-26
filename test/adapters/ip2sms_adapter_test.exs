@@ -5,7 +5,7 @@ defmodule Mouth.IP2SMSAdapterTest do
   @default_attrs [to: "+380931234567", body: "test"]
 
   defmodule TestSMS2IPSender do
-    use Mouth.Messanger, otp_app: :mouth
+    use Mouth.Messenger, otp_app: :mouth
   end
 
   setup_all do

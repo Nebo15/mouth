@@ -22,7 +22,7 @@ end
 # In your config/config.exs file
 #
 # There may be other adapter specific configuration you need to add.
-config :my_app, MyApp.Messanger,
+config :my_app, MyApp.Messenger,
   adapter: Mouth.SMS2IPAdapter,
   source_number: "TEST_NUMBER",
   gateway_url: "localhost:4000",
@@ -30,8 +30,8 @@ config :my_app, MyApp.Messanger,
   password: "password"
 
 # Somewhere in your application
-defmodule MyApp.Messanger do
-  use Mouth.Messanger, otp_app: :my_app
+defmodule MyApp.Messenger do
+  use Mouth.Messenger, otp_app: :my_app
 end
 
 # Define your messages
@@ -52,7 +52,7 @@ defmodule MyApp.Message do
 end
 
 # In a controller or some other module
-Message.send_password |> Messanger.deliver
+Message.send_password |> Messenger.deliver
 ```
 
 ## Contributing

@@ -1,31 +1,31 @@
-defmodule Mouth.Messanger do
+defmodule Mouth.Messenger do
   @moduledoc """
   """
 
   @cannot_call_directly_error """
-  cannot call Mouth.Messanger directly. Instead implement your own Messanger module
-  with: use Mouth.Messanger, otp_app: :my_app
+  cannot call Mouth.Messenger directly. Instead implement your own Messenger module
+  with: use Mouth.Messenger, otp_app: :my_app
   """
   require Logger
 
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts] do
-      @behaviour Mouth.Messanger
+      @behaviour Mouth.Messenger
 
       @spec deliver(Mouth.Message.t) :: Mouth.Message.t
       def deliver(message) do
         config = build_config()
-        Mouth.Messanger.deliver(message, config)
+        Mouth.Messenger.deliver(message, config)
       end
 
       def status(id) do
         config = build_config()
-        Mouth.Messanger.status(id, config)
+        Mouth.Messenger.status(id, config)
       end
 
       otp_app = Keyword.fetch!(opts, :otp_app)
 
-      defp build_config, do: Mouth.Messanger.build_config(__MODULE__, unquote(otp_app))
+      defp build_config, do: Mouth.Messenger.build_config(__MODULE__, unquote(otp_app))
     end
   end
 
@@ -103,9 +103,9 @@ defmodule Mouth.Messanger do
   end
   defp nil_recipient?(_), do: false
 
-  def build_config(messanger, otp_app) do
+  def build_config(messenger, otp_app) do
     otp_app
-    |> get_application_config(messanger)
+    |> get_application_config(messenger)
     |> Map.new
     |> handle_adapter_config
   end
@@ -114,12 +114,12 @@ defmodule Mouth.Messanger do
     adapter.handle_config(base_config)
   end
 
-  defp get_application_config(otp_app, messanger) do
+  defp get_application_config(otp_app, messenger) do
     {:ok, config} =
-      if Code.ensure_loaded?(messanger) and function_exported?(messanger, :init, 0) do
-        messanger.init
+      if Code.ensure_loaded?(messenger) and function_exported?(messenger, :init, 0) do
+        messenger.init
       else
-        {:ok, Application.get_env(otp_app, messanger)}
+        {:ok, Application.get_env(otp_app, messenger)}
       end
     config
   end

@@ -7,7 +7,7 @@ defmodule Mouth.TestAdapterTest do
   @default_attrs [to: "+380501234567", body: "test"]
 
   defmodule TestSender do
-    use Mouth.Messanger, otp_app: :mouth
+    use Mouth.Messenger, otp_app: :mouth
     def init() do
       config = Confex.get_map(:mouth, TestSender)
       {:ok, config}
