@@ -3,6 +3,11 @@ defmodule Mouth.TestAdapter do
   Implimentation of Test Adapter for Mouth
   """
   @behaviour Mouth.Adapter
+
+  def deliver(%Mouth.Message{body: "exception"}, config) do
+    Mouth.raise_api_error(config.gateway_url, "There was a problem sending the message", "response body")
+  end
+
   def deliver(message, _) do
     IO.puts message.body
     {:ok, [status: "Accepted", id: "test"]}
