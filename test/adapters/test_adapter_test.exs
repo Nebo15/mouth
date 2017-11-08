@@ -38,6 +38,12 @@ defmodule Mouth.TestAdapterTest do
     }
   end
 
+  test "TestSender.deliver/1 raises api error" do
+    msg = Message.new_message(body: "exception", to: "+380501234567")
+    assert_raise Mouth.ApiError, fn ->
+      TestSender.deliver(msg)
+    end
+  end
 
   test "confex integration" do
     msg = Message.new_message(@default_attrs)
