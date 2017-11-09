@@ -9,18 +9,18 @@ defmodule Mouth.IP2SMSAdapter do
 
   @spec deliver(Mouth.Message.t, %{}) :: {}
   def deliver(%Mouth.Message{to: to, body: body} = _, config) do
-    process_request(compile_send_xml(to, body, config), config)
+    process_request(config.gateway_url, compile_send_xml(to, body, config), config)
   end
 
   @spec status(String.t, %{}) :: {}
   def status(id, config) do
-    process_request(compile_status_xml(id, config), config)
+    process_request(config.gateway_status_url, compile_status_xml(id, config), config)
   end
 
-  defp process_request(xml, config) do
+  defp process_request(url, xml, config) do
     response =
-      xml
-      |> http_call(config)
+      url
+      |> http_call(xml, config)
       |> parse_resp()
     case response[:status] do
       status when status in @positive_statuses ->
@@ -32,8 +32,8 @@ defmodule Mouth.IP2SMSAdapter do
     end
   end
 
-  defp http_call(body, config) do
-    case :hackney.post(config.gateway_url, headers(config), body, [:with_body]) do
+  defp http_call(url, body, config) do
+    case :hackney.post(url, headers(config), body, [:with_body]) do
       {:ok, status, _headers, response} when status > 299 ->
         Mouth.raise_api_error(config.gateway_url, response, body)
       {:ok, status, headers, response} ->
@@ -57,6 +57,10 @@ defmodule Mouth.IP2SMSAdapter do
 
     unless config[:gateway_url] do
       Mouth.raise_config_error(config, :gateway_url)
+    end
+
+    unless config[:gateway_status_url] do
+      Mouth.raise_config_error(config, :gateway_status_url)
     end
 
     unless config[:login] do

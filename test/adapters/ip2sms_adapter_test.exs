@@ -20,6 +20,7 @@ defmodule Mouth.IP2SMSAdapterTest do
       adapter: Mouth.IP2SMSAdapter,
       source_number: "TEST_NUMBER",
       gateway_url: "localhost:4000",
+      gateway_status_url: "localhost:4000",
       login: "test",
       password: "password"
     )
@@ -69,6 +70,7 @@ defmodule Mouth.IP2SMSAdapterTest do
         adapter: Mouth.IP2SMSAdapter,
         source_number: "TEST_NUMBER",
         gateway_url: "localhost:4000/error",
+        gateway_status_url: "localhost:4000",
         login: "test",
         password: "password"
       )
@@ -91,6 +93,7 @@ defmodule Mouth.IP2SMSAdapterTest do
         adapter: Mouth.IP2SMSAdapter,
         source_number: "TEST_NUMBER",
         gateway_url: "superunavaibledoma.in",
+        gateway_status_url: "localhost:4000",
         login: "test",
         password: "password"
       )
@@ -113,6 +116,7 @@ defmodule Mouth.IP2SMSAdapterTest do
       __MODULE__.TestSMS2IPSender,
       adapter: Mouth.IP2SMSAdapter,
       gateway_url: "localhost:4000",
+      gateway_status_url: "localhost:4000",
       login: "test",
       password: "password"
     )
@@ -121,7 +125,7 @@ defmodule Mouth.IP2SMSAdapterTest do
     """
     There was no source_number set for the Elixir.Mouth.IP2SMSAdapter adapter.
     * Here are the config options that were passed in:
-    %{adapter: Mouth.IP2SMSAdapter, gateway_url: \"localhost:4000\", login: \"test\", password: \"password\"}
+    %{adapter: Mouth.IP2SMSAdapter, gateway_status_url: \"localhost:4000\", gateway_url: \"localhost:4000\", login: \"test\", password: \"password\"}
     """
     }
     Application.put_env(
@@ -129,6 +133,7 @@ defmodule Mouth.IP2SMSAdapterTest do
       __MODULE__.TestSMS2IPSender,
       adapter: Mouth.IP2SMSAdapter,
       source_number: "TEST_NUMBER",
+      gateway_status_url: "localhost:4000",
       login: "test",
       password: "password"
     )
@@ -137,7 +142,7 @@ defmodule Mouth.IP2SMSAdapterTest do
     """
     There was no gateway_url set for the Elixir.Mouth.IP2SMSAdapter adapter.
     * Here are the config options that were passed in:
-    %{adapter: Mouth.IP2SMSAdapter, login: \"test\", password: \"password\", source_number: \"TEST_NUMBER\"}
+    %{adapter: Mouth.IP2SMSAdapter, gateway_status_url: \"localhost:4000\", login: \"test\", password: \"password\", source_number: \"TEST_NUMBER\"}
     """
     }
     Application.put_env(
@@ -145,6 +150,7 @@ defmodule Mouth.IP2SMSAdapterTest do
       __MODULE__.TestSMS2IPSender,
       adapter: Mouth.IP2SMSAdapter,
       gateway_url: "localhost:4000",
+      gateway_status_url: "localhost:4000",
       source_number: "TEST_NUMBER",
       password: "password"
     )
@@ -153,7 +159,7 @@ defmodule Mouth.IP2SMSAdapterTest do
     """
     There was no login set for the Elixir.Mouth.IP2SMSAdapter adapter.
     * Here are the config options that were passed in:
-    %{adapter: Mouth.IP2SMSAdapter, gateway_url: \"localhost:4000\", password: \"password\", source_number: \"TEST_NUMBER\"}
+    %{adapter: Mouth.IP2SMSAdapter, gateway_status_url: \"localhost:4000\", gateway_url: \"localhost:4000\", password: \"password\", source_number: \"TEST_NUMBER\"}
     """
     }
     Application.put_env(
@@ -161,6 +167,7 @@ defmodule Mouth.IP2SMSAdapterTest do
       __MODULE__.TestSMS2IPSender,
       adapter: Mouth.IP2SMSAdapter,
       gateway_url: "localhost:4000",
+      gateway_status_url: "localhost:4000",
       source_number: "TEST_NUMBER",
       login: "test"
     )
@@ -169,7 +176,7 @@ defmodule Mouth.IP2SMSAdapterTest do
     """
     There was no password set for the Elixir.Mouth.IP2SMSAdapter adapter.
     * Here are the config options that were passed in:
-    %{adapter: Mouth.IP2SMSAdapter, gateway_url: \"localhost:4000\", login: \"test\", source_number: \"TEST_NUMBER\"}
+    %{adapter: Mouth.IP2SMSAdapter, gateway_status_url: \"localhost:4000\", gateway_url: \"localhost:4000\", login: \"test\", source_number: \"TEST_NUMBER\"}
     """
     }
   end
