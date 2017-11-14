@@ -9,7 +9,7 @@ by adding `mouth` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:mouth, "~> 0.1.0"}]
+  [{:mouth, "~> 0.3.2"}]
 end
 ```
 

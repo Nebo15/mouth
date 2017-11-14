@@ -10,12 +10,12 @@ defmodule Mouth.TestAdapter do
 
   def deliver(message, _) do
     IO.puts message.body
-    {:ok, [status: "Accepted", id: "test"]}
+    {:ok, [status: "Accepted", id: "test", datetime: to_string(DateTime.utc_now())]}
   end
 
   def status(_, config) do
     IO.puts inspect config
-    {:ok, [status: "Accepted", id: "test"]}
+    {:ok, [status: "Accepted", id: "test", datetime: to_string(DateTime.utc_now())]}
   end
 
   def handle_config(config) do
