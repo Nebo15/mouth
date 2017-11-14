@@ -47,7 +47,8 @@ defmodule Mouth.IP2SMSAdapter do
     { doc, _ } = response |> :binary.bin_to_list |> :xmerl_scan.string
     {:xmlObj, :string, status} = :xmerl_xpath.string('string(/status/state)', doc)
     {:xmlObj, :string, id} = :xmerl_xpath.string('string(/status/@id)', doc)
-    [status: to_string(status), id: to_string(id)]
+    {:xmlObj, :string, datetime} = :xmerl_xpath.string('string(/status/@date)', doc)
+    [status: to_string(status), id: to_string(id), datetime: to_string(datetime)]
   end
 
   def handle_config(config) do

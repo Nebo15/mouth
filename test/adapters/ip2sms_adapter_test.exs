@@ -50,17 +50,19 @@ defmodule Mouth.IP2SMSAdapterTest do
 
     test "TestSender.deliver/1 works as expected" do
       msg = Message.new_message(@default_attrs)
-      assert TestSMS2IPSender.deliver(msg) == {:ok, [status: "Accepted", id: "3806712345671174984921384"]}
+      assert TestSMS2IPSender.deliver(msg) == {:ok,
+        [status: "Accepted", id: "3806712345671174984921384", datetime: "Wed, 28 Mar 2007 12:35:00 +0300"]}
     end
 
     test "TestSender.deliver/1 works as expected with multiple numbers" do
       msg = Message.new_message(to: ["+380931234567", "+380931230987"], body: "test")
-      assert TestSMS2IPSender.deliver(msg) == {:ok, [status: "Accepted", id: "3806712345671174984921384"]}
+      assert TestSMS2IPSender.deliver(msg) == {:ok,
+        [status: "Accepted", id: "3806712345671174984921384", datetime: "Wed, 28 Mar 2007 12:35:00 +0300"]}
     end
 
     test "TestSender.status/1 works as expected" do
       assert TestSMS2IPSender.status("3806712345671174984921384") ==
-        {:ok, [status: "Accepted", id: "3806712345671174984921384"]}
+        {:ok, [status: "Accepted", id: "3806712345671174984921384", datetime: "Wed, 28 Mar 2007 12:35:00 +0300"]}
     end
 
     test "TestSMS2IPSender.deliver/1 raises when server returns error" do
