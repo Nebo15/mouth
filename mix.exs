@@ -3,7 +3,7 @@ defmodule Mouth.Mixfile do
 
   def project do
     [app: :mouth,
-     version: "0.3.3",
+     version: "0.3.4",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -14,7 +14,7 @@ defmodule Mouth.Mixfile do
   end
 
   def application do
-    [external_applications: [:logger, :hackney, :xmerl]]
+    [extra_applications: [:logger, :hackney, :xmerl]]
   end
 
   defp deps do
