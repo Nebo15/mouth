@@ -12,7 +12,7 @@ defmodule Mouth.Messenger do
     quote bind_quoted: [opts: opts] do
       @behaviour Mouth.Messenger
 
-      @spec deliver(Mouth.Message.t) :: Mouth.Message.t
+      @spec deliver(Mouth.Message.t()) :: Mouth.Message.t()
       def deliver(message) do
         config = build_config()
         Mouth.Messenger.deliver(message, config)
@@ -30,7 +30,7 @@ defmodule Mouth.Messenger do
   end
 
   @optional_callbacks init: 0
-  @callback init() :: {:ok, Keyword.t} | :ignore
+  @callback init() :: {:ok, Keyword.t()} | :ignore
 
   @doc false
   def deliver(_message) do
@@ -53,6 +53,7 @@ defmodule Mouth.Messenger do
         debug_sent(message, config.adapter)
         config.adapter.deliver(message, config)
       end
+
     result
   end
 
@@ -62,19 +63,19 @@ defmodule Mouth.Messenger do
   end
 
   defp debug_sent(message, adapter) do
-    Logger.debug """
-    Sending message with #{inspect adapter}:
+    Logger.debug("""
+    Sending message with #{inspect(adapter)}:
 
-    #{inspect message, limit: :infinity}
-    """
+    #{inspect(message, limit: :infinity)}
+    """)
   end
 
   defp debug_unsent(message) do
-    Logger.debug """
+    Logger.debug("""
     Message was not sent because recipient is empty.
 
-    Full message - #{inspect message, limit: :infinity}
-    """
+    Full message - #{inspect(message, limit: :infinity)}
+    """)
   end
 
   defp validate_and_normalize(message, adapter) do
@@ -87,9 +88,9 @@ defmodule Mouth.Messenger do
 
   defp validate_recipients(%Mouth.Message{} = message) do
     if Enum.all?(
-      Enum.map([:to], &Map.get(message, &1)),
-      &nil_recipient?/1
-    ) do
+         Enum.map([:to], &Map.get(message, &1)),
+         &nil_recipient?/1
+       ) do
       raise Mouth.NilRecipientsError, message
     else
       message
@@ -98,15 +99,17 @@ defmodule Mouth.Messenger do
 
   defp nil_recipient?(nil), do: true
   defp nil_recipient?([]), do: false
+
   defp nil_recipient?([_] = recipients) do
     Enum.all?(recipients, &nil_recipient?/1)
   end
+
   defp nil_recipient?(_), do: false
 
   def build_config(messenger, otp_app) do
     otp_app
     |> get_application_config(messenger)
-    |> Map.new
+    |> Map.new()
     |> handle_adapter_config
   end
 
@@ -121,6 +124,7 @@ defmodule Mouth.Messenger do
       else
         {:ok, Application.get_env(otp_app, messenger)}
       end
+
     config
   end
 end

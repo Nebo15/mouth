@@ -9,8 +9,9 @@ defmodule Mouth do
     def exception(message) do
       message = """
       All recipients were set to nil. Must specify at least one recipient.
-      Full message - #{inspect message, limit: :infinity}
+      Full message - #{inspect(message, limit: :infinity)}
       """
+
       %NilRecipientsError{message: message}
     end
   end
@@ -23,8 +24,9 @@ defmodule Mouth do
       message = """
       There was no #{field} set for the #{config.adapter} adapter.
       * Here are the config options that were passed in:
-      #{inspect config}
+      #{inspect(config)}
       """
+
       %ConfigError{message: message}
     end
   end
@@ -41,13 +43,15 @@ defmodule Mouth do
       message = """
       There was a problem sending the message through the #{service_name} API.
       Here is the response:
-      #{inspect response, limit: :infinity}
+      #{inspect(response, limit: :infinity)}
       Here are the params we sent:
-      #{inspect params, limit: :infinity}
+      #{inspect(params, limit: :infinity)}
       """
+
       %ApiError{message: message}
     end
   end
+
   def raise_api_error(service_name, response, params) do
     raise ApiError, {service_name, response, params}
   end
