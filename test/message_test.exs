@@ -15,16 +15,14 @@ defmodule Mouth.MessageTest do
 
   test "TestSender.send/1 works with to list" do
     assert %Message{to: ["+380501234567", "+380501234568"], body: "test"} ==
-      Message.new_message(to: ["+380501234567", "+380501234568"], body: "test")
+             Message.new_message(to: ["+380501234567", "+380501234568"], body: "test")
   end
 
   test "helper function to" do
-    assert %Message{to: "+380501234567", body: nil} ==
-      Message.new_message() |> to("+380501234567")
+    assert %Message{to: "+380501234567", body: nil} == Message.new_message() |> to("+380501234567")
   end
 
   test "helper function body" do
-    assert %Message{to: nil, body: "test"} ==
-      Message.new_message() |> body("test")
+    assert %Message{to: nil, body: "test"} == Message.new_message() |> body("test")
   end
 end
