@@ -24,10 +24,14 @@ defmodule Mix.Tasks.Mouth.Inbox.Server do
   end
 
   defp run_args do
-    if iex_running?(), do: [], else: ["--no-halt"]
+    if iex_running?() || halt?(), do: [], else: ["--no-halt"]
   end
 
   defp iex_running? do
     Code.ensure_loaded?(IEx) && IEx.started?()
+  end
+
+  defp halt? do
+    Application.get_env(:mouth, :halt_server)
   end
 end

@@ -12,10 +12,6 @@ defmodule Mouth.LocalAdapter.Storage.Memory do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def stop do
-    GenServer.stop(__MODULE__)
-  end
-
   def push(message) do
     GenServer.call(__MODULE__, {:push, message})
   end

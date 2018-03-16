@@ -47,14 +47,6 @@ if Code.ensure_loaded?(Plug) do
       |> send_resp(200, template(messages: messages, message: nil, conn: conn))
     end
 
-    get "/:id/html" do
-      message = conn.assigns.storage_driver.get(id)
-
-      conn
-      |> put_resp_content_type("text/html")
-      |> send_resp(200, message.html_body)
-    end
-
     get "/:id" do
       messages = conn.assigns.storage_driver.all()
       message = conn.assigns.storage_driver.get(id)
@@ -64,8 +56,8 @@ if Code.ensure_loaded?(Plug) do
       |> send_resp(200, template(messages: messages, message: message, conn: conn))
     end
 
-    defp handle_errors(conn, %{kind: _kind, reason: _reason, stack: _stack}) do
-      send_resp(conn, conn.status, "Something went wrong")
+    match _ do
+      send_resp(conn, 404, "not found")
     end
 
     defp to_absolute_url(conn, path) do

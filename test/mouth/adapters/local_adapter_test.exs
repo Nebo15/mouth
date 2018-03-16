@@ -30,4 +30,11 @@ defmodule Mouth.Adapters.LocalTest do
 
     assert [%Message{body: "test"}] = Memory.all()
   end
+
+  test "LocalSender.status/1 returns accepted status" do
+    assert {:ok, status} = LocalSender.status("id")
+    assert status[:status] == "Accepted"
+    assert status[:id] == "id"
+    assert status[:datetime]
+  end
 end
