@@ -4,8 +4,6 @@ defmodule Mouth.Adapters.LocalTest do
   alias Mouth.Message
   alias Mouth.LocalAdapter.Storage.Memory
 
-  @default_attrs [to: "+380501234567", body: "test"]
-
   defmodule LocalSender do
     use Mouth.Messenger, otp_app: :mouth
 

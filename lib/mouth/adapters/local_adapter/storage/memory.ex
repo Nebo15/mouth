@@ -8,11 +8,11 @@ defmodule Mouth.LocalAdapter.Storage.Memory do
 
   use GenServer
 
-  def start_link() do
+  def start_link do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def stop() do
+  def stop do
     GenServer.stop(__MODULE__)
   end
 
@@ -20,7 +20,7 @@ defmodule Mouth.LocalAdapter.Storage.Memory do
     GenServer.call(__MODULE__, {:push, message})
   end
 
-  def pop() do
+  def pop do
     GenServer.call(__MODULE__, :pop)
   end
 
@@ -28,11 +28,11 @@ defmodule Mouth.LocalAdapter.Storage.Memory do
     GenServer.call(__MODULE__, {:get, id})
   end
 
-  def all() do
+  def all do
     GenServer.call(__MODULE__, :all)
   end
 
-  def delete_all() do
+  def delete_all do
     GenServer.call(__MODULE__, :delete_all)
   end
 
@@ -43,7 +43,12 @@ defmodule Mouth.LocalAdapter.Storage.Memory do
   end
 
   def handle_call({:push, message}, _from, messages) do
-    id = :crypto.strong_rand_bytes(16) |> Base.encode16() |> String.downcase()
+    id =
+      16
+      |> :crypto.strong_rand_bytes()
+      |> Base.encode16()
+      |> String.downcase()
+
     message = %{message | meta: %{id: id}}
     {:reply, message, [message | messages]}
   end
