@@ -16,7 +16,7 @@ defmodule Mouth.Mixfile do
   end
 
   def application do
-    [extra_applications: [:logger, :hackney, :xmerl]]
+    [extra_applications: [:logger, :hackney, :xmerl], mod: {Mouth.Application, []}]
   end
 
   defp deps do

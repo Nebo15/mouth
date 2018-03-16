@@ -1,7 +1,8 @@
 defmodule Mouth.TestAdapter do
   @moduledoc """
-  Implimentation of Test Adapter for Mouth
+  Implementation of Test Adapter for Mouth
   """
+
   @behaviour Mouth.Adapter
 
   def deliver(%Mouth.Message{body: "exception"}, config) do
