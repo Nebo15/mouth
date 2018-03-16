@@ -26,8 +26,8 @@ defmodule Mouth.Mixfile do
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:dogma, "~> 0.1", only: :test},
       {:excoveralls, "~> 0.6", only: :test},
-      {:cowboy, "~> 1.0.0", only: :test},
-      {:plug, "~> 1.0", only: :test},
+      {:cowboy, "~> 1.0.0", optional: true},
+      {:plug, "~> 1.0", optional: true},
       {:confex, ">= 0.0.0", only: :test}
     ]
   end
