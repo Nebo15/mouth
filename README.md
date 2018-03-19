@@ -15,11 +15,11 @@ end
 
 ## Adapters
 
-* `Mouth.SMS2IPAdapter` - Simple SMS2IP adapter
-* `Mouth.TwilioAdapter` - Adapter for sending SMS through Twilio
+* `Mouth.SMS2IPAdapter` - Simple SMS2IP adapter.
+* `Mouth.TwilioAdapter` - Adapter for sending SMS through Twilio.
 * `Mouth.LocalAdapter` - Delivers messages to an in-memory store. Useful for
   development when you don't want to send real SMS messages.
-* `Mouth.TestAdapter` - Adapter for test environment
+* `Mouth.TestAdapter` - Adapter for test environment.
 
 ## Getting Started
 
