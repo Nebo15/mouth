@@ -25,7 +25,7 @@ if Code.ensure_loaded?(Plug) do
     alias Mouth.LocalAdapter.Storage.Memory
 
     require EEx
-    EEx.function_from_file(:defp, :template, "lib/plug/templates/inbox_preview/index.html.eex", [:assigns])
+    EEx.function_from_file(:defp, :template, "priv/templates/inbox_preview/index.html.eex", [:assigns])
 
     def call(conn, opts) do
       conn =
