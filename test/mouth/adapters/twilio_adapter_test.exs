@@ -251,7 +251,7 @@ defmodule Mouth.TwilioAdapterTest do
     assert catch_error(TestTwilioSender.deliver(msg)) == %Mouth.NilRecipientsError{
              message: """
              All recipients were set to nil. Must specify at least one recipient.
-             Full message - %Mouth.Message{body: nil, to: nil}
+             Full message - %Mouth.Message{body: nil, meta: %{}, to: nil}
              """
            }
   end

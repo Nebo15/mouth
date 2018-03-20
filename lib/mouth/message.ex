@@ -7,10 +7,13 @@ defmodule Mouth.Message do
 
   @type t :: %__MODULE__{
           to: phone_number,
-          body: String.t()
+          body: String.t(),
+          meta: map
         }
+
   defstruct to: nil,
-            body: nil
+            body: nil,
+            meta: %{}
 
   @spec new_message(Enum.t()) :: __MODULE__.t()
   def new_message(attrs \\ []) do

@@ -14,10 +14,15 @@ end
 ```
 
 ## Adapters
-* `Mouth.SMS2IPAdapter` - Simple SMS2IP adapter
-* `Mouth.TestAdapter` - Adapter for test environment
+
+* `Mouth.SMS2IPAdapter` - Simple SMS2IP adapter.
+* `Mouth.TwilioAdapter` - Adapter for sending SMS through Twilio.
+* `Mouth.LocalAdapter` - Delivers messages to an in-memory store. Useful for
+  development when you don't want to send real SMS messages.
+* `Mouth.TestAdapter` - Adapter for test environment.
 
 ## Getting Started
+
 ```elixir
 # In your config/config.exs file
 #
@@ -55,6 +60,45 @@ end
 Message.send_password |> Messenger.deliver
 ```
 
+## Inbox preview in the browser
+
+Mouth ships with a Plug that allows you to preview the messages in the local
+(in-memory) mailbox. It's particularly convenient in development when you
+want to check what your message will look like while testing the various flows
+of your application.
+
+For email to reach this mailbox you will need to set your `Mailer` adapter to
+`Swoosh.Adapters.Local`:
+
+```elixir
+# in config/dev.exs
+config :my_app, MyApp.Messenger,
+  adapter: Mouth.LocalAdapter
+```
+
+Then, use the Mix task to start the inbox preview server:
+
+```console
+$ mix mouth.inbox.server
+```
+
+Or in your Phoenix project you can `forward` directly to the plug, like this:
+
+```elixir
+# in web/router.ex
+if Mix.env == :dev do
+  scope "/dev" do
+    pipe_through [:browser]
+
+    forward "/inbox", Plug.Mouth.InboxPreview, [base_path: "/dev/inbox"]
+  end
+end
+```
+
+If you are curious, this is how it looks:
+
+![Plug.Mouth.InboxPreview](images/inbox-preview.png)
+
 ## Contributing
 
 Before opening a pull request, please open an issue first.
@@ -69,4 +113,5 @@ Once we've decided how to move forward with a pull request:
 Once you've made your additions and `mix test` passes, go ahead and open a PR!
 
 ## Thanks!
-Thanks to cool guys from [Bamboo](https://github.com/thoughtbot/bamboo) for inspiration
+Thanks to cool guys from [Bamboo](https://github.com/thoughtbot/bamboo) for inspiration,
+and [Swoosh](https://github.com/swoosh/swoosh) for the `LocalAdapter`.
