@@ -2,8 +2,6 @@ defmodule Mouth.TestAdapterTest do
   use ExUnit.Case
   alias Mouth.Message
 
-  import ExUnit.CaptureIO
-
   @default_attrs [to: "+380501234567", body: "test"]
 
   defmodule TestSender do
@@ -24,10 +22,10 @@ defmodule Mouth.TestAdapterTest do
 
   test "TestSender.deliver/1 works as expected" do
     msg = Message.new_message(@default_attrs)
+    {:ok, _} = TestSender.deliver(msg)
 
-    assert capture_io(fn ->
-             TestSender.deliver(msg)
-           end) == "test\n"
+    assert_receive {:sms, message}
+    assert message.body == "test"
   end
 
   test "TestSender.deliver/1 raises when data is invalid" do
@@ -57,8 +55,7 @@ defmodule Mouth.TestAdapterTest do
       System.delete_env("GATEWAY_URL")
     end)
 
-    assert capture_io(fn ->
-             TestSender.status(msg)
-           end) == "%{adapter: Mouth.TestAdapter, gateway_url: \"systemurl.com:4000\"}\n"
+    {:ok, _} = TestSender.status(msg)
+    assert_receive {:config, %{adapter: Mouth.TestAdapter, gateway_url: "systemurl.com:4000"}}
   end
 end
