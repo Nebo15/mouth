@@ -1,6 +1,8 @@
 defmodule Mouth.TwilioAdapter do
   @moduledoc false
 
+  import Mouth.Adapter, only: [hackney_options: 2]
+
   @behaviour Mouth.Adapter
 
   @positive_statuses ~w(
@@ -23,7 +25,7 @@ defmodule Mouth.TwilioAdapter do
   def status(id, config) do
     url = "#{config.host}/2010-04-01/Accounts/#{config.account_sid}/Messages/#{id}.json"
 
-    call = :hackney.get(url, headers(config), [], [:with_body])
+    call = :hackney.get(url, headers(config), [], hackney_options(config, with_body: true))
 
     url
     |> http_call(call, "")
@@ -34,7 +36,7 @@ defmodule Mouth.TwilioAdapter do
     url = "#{config.host}/2010-04-01/Accounts/#{config.account_sid}/Messages.json"
     request = [Body: body, To: to, From: config.source_number]
 
-    call = :hackney.post(url, headers(config), {:form, request}, [:with_body])
+    call = :hackney.post(url, headers(config), {:form, request}, hackney_options(config, with_body: true))
 
     url
     |> http_call(call, request)
