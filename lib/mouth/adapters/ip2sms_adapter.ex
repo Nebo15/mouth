@@ -2,6 +2,8 @@ defmodule Mouth.IP2SMSAdapter do
   @moduledoc """
   Implimentation of IP2SMS Adapter for Mouth
   """
+  import Mouth.Adapter, only: [hackney_options: 2]
+
   @behaviour Mouth.Adapter
 
   @positive_statuses [
@@ -45,7 +47,7 @@ defmodule Mouth.IP2SMSAdapter do
   end
 
   defp http_call(url, body, config) do
-    case :hackney.post(url, headers(config), body, [:with_body]) do
+    case :hackney.post(url, headers(config), body, hackney_options(config, with_body: true)) do
       {:ok, status, _headers, response} when status > 299 ->
         Mouth.raise_api_error(config.gateway_url, response, body)
 
