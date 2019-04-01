@@ -56,6 +56,13 @@ defmodule Mouth.IP2SMSAdapterTest do
                {:ok, [status: "Accepted", id: "3806712345671174984921384", datetime: "Wed, 28 Mar 2007 12:35:00 +0300"]}
     end
 
+    test "TestSender.deliver/1 works as expected with overridden from" do
+      msg = Message.new_message(@default_attrs ++ [from: "someotherfrom"])
+
+      assert TestSMS2IPSender.deliver(msg) ==
+               {:ok, [status: "Accepted", id: "3806712345671174984921384", datetime: "Wed, 28 Mar 2007 12:35:00 +0300"]}
+    end
+
     test "TestSender.deliver/1 works as expected with multiple numbers" do
       msg = Message.new_message(to: ["+380931234567", "+380931230987"], body: "test")
 

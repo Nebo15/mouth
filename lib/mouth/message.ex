@@ -7,11 +7,13 @@ defmodule Mouth.Message do
 
   @type t :: %__MODULE__{
           to: phone_number,
+          from: phone_number,
           body: String.t(),
           meta: map
         }
 
   defstruct to: nil,
+            from: nil,
             body: nil,
             meta: %{}
 
@@ -23,6 +25,11 @@ defmodule Mouth.Message do
   @spec to(__MODULE__.t(), String.t()) :: __MODULE__.t()
   def to(message, param) do
     Map.put(message, :to, param)
+  end
+
+  @spec from(__MODULE__.t(), String.t()) :: __MODULE__.t()
+  def from(message, param) do
+    Map.put(message, :from, param)
   end
 
   @spec body(__MODULE__.t(), String.t()) :: __MODULE__.t()

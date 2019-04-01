@@ -17,8 +17,8 @@ defmodule Mouth.TwilioAdapter do
   @negative_statuses ~w(failed undelivered)
 
   @spec deliver(Mouth.Message.t(), %{}) :: {}
-  def deliver(%Mouth.Message{to: to, body: body} = _, config) do
-    process_request(to, body, config)
+  def deliver(%Mouth.Message{to: to, from: from, body: body} = _, config) do
+    process_request(to, from, body, config)
   end
 
   @spec status(String.t(), %{}) :: {}
@@ -32,9 +32,9 @@ defmodule Mouth.TwilioAdapter do
     |> parse_resp(url)
   end
 
-  defp process_request(to, body, config) do
+  defp process_request(to, from, body, config) do
     url = "#{config.host}/2010-04-01/Accounts/#{config.account_sid}/Messages.json"
-    request = [Body: body, To: to, From: config.source_number]
+    request = [Body: body, To: to, From: from || config.source_number]
 
     call = :hackney.post(url, headers(config), {:form, request}, hackney_options(config, with_body: true))
 
