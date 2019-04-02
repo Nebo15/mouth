@@ -13,10 +13,11 @@ defmodule Mouth.ApplicationTest do
       end)
 
     assert output =~ "Running Mouth inbox preview server with Cowboy using http on port 1423"
+
     assert Mouth.Application.children() == [
-      Plug.Adapters.Cowboy.child_spec(:http, Plug.Mouth.InboxPreview, [], port: 1423),
-      worker(Mouth.LocalAdapter.Storage.Memory, [])
-    ]
+             Plug.Cowboy.child_spec(scheme: :http, plug: Plug.Mouth.InboxPreview, options: [port: 1423]),
+             worker(Mouth.LocalAdapter.Storage.Memory, [])
+           ]
 
     Application.delete_env(:mouth, :serve_inbox)
   end

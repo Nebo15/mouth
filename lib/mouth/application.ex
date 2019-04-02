@@ -26,7 +26,7 @@ defmodule Mouth.Application do
       case {cowboy, plug} do
         {{:ok, _}, {:ok, _}} ->
           Logger.info("Running Mouth inbox preview server with Cowboy using http on port #{port}")
-          [Plug.Adapters.Cowboy.child_spec(:http, Plug.Mouth.InboxPreview, [], port: port) | base]
+          [Plug.Cowboy.child_spec(scheme: :http, plug: Plug.Mouth.InboxPreview, options: [port: port]) | base]
 
         _ ->
           Logger.warn(
