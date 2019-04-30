@@ -34,7 +34,17 @@ defmodule Mouth.TwilioAdapter do
 
   defp process_request(to, from, body, config) do
     url = "#{config.host}/2010-04-01/Accounts/#{config.account_sid}/Messages.json"
-    request = [Body: body, To: to, From: from || config.source_number]
+    request =
+      cond do
+        from ->
+          [Body: body, To: to, From: from]
+        config[:messaging_service_sid] ->
+          [Body: body, To: to, MessagingServiceSid: config.messaging_service_sid]
+        true ->
+          [Body: body, To: to, From: config.source_number]
+      end
+
+    send(self(), {:twilio_call, request})
 
     call = :hackney.post(url, headers(config), {:form, request}, hackney_options(config, with_body: true))
 

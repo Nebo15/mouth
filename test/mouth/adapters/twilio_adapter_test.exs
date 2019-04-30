@@ -125,6 +125,31 @@ defmodule Mouth.TwilioAdapterTest do
                   id: "SM1da5893f540a4e86a8a0b6dd549de34a",
                   datetime: "Fri, 16 Feb 2018 11:11:24 +0000"
                 ]}
+      assert_received {:twilio_call, [Body: _, To: _, From: "someotherfrom"]}
+    end
+
+    test "TestSender.deliver/1 works as expected with messaging_service_sid" do
+      Application.put_env(
+        :mouth,
+        __MODULE__.TestTwilioSender,
+        adapter: Mouth.TwilioAdapter,
+        host: "localhost:4001",
+        source_number: "TEST_NUMBER",
+        messaging_service_sid: "MESSAGING_SERVICE_SID",
+        account_sid: "test_sid",
+        auth_token: "token"
+      )
+
+      msg = Message.new_message(@default_attrs)
+
+      assert TestTwilioSender.deliver(msg) ==
+               {:ok,
+                [
+                  status: "queued",
+                  id: "SM1da5893f540a4e86a8a0b6dd549de34a",
+                  datetime: "Fri, 16 Feb 2018 11:11:24 +0000"
+                ]}
+      assert_received {:twilio_call, [Body: _, To: _, MessagingServiceSid: "MESSAGING_SERVICE_SID"]}
     end
 
     test "TestSender.deliver/1 works as expected with multiple numbers" do
