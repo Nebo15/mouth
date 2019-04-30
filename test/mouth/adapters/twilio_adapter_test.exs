@@ -134,7 +134,6 @@ defmodule Mouth.TwilioAdapterTest do
         __MODULE__.TestTwilioSender,
         adapter: Mouth.TwilioAdapter,
         host: "localhost:4001",
-        source_number: "TEST_NUMBER",
         messaging_service_sid: "MESSAGING_SERVICE_SID",
         account_sid: "test_sid",
         auth_token: "token"

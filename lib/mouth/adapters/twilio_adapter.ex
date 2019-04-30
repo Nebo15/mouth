@@ -93,7 +93,7 @@ defmodule Mouth.TwilioAdapter do
       Mouth.raise_config_error(config, :host)
     end
 
-    unless config[:source_number] do
+    unless config[:source_number] || config[:messaging_service_sid] do
       Mouth.raise_config_error(config, :source_number)
     end
 
