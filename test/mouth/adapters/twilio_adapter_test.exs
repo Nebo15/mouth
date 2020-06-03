@@ -115,6 +115,42 @@ defmodule Mouth.TwilioAdapterTest do
                 ]}
     end
 
+    test "TestSender.deliver/1 works as expected with overridden from" do
+      msg = Message.new_message(@default_attrs ++ [from: "someotherfrom"])
+
+      assert TestTwilioSender.deliver(msg) ==
+               {:ok,
+                [
+                  status: "queued",
+                  id: "SM1da5893f540a4e86a8a0b6dd549de34a",
+                  datetime: "Fri, 16 Feb 2018 11:11:24 +0000"
+                ]}
+      assert_received {:twilio_call, [Body: _, To: _, From: "someotherfrom"]}
+    end
+
+    test "TestSender.deliver/1 works as expected with messaging_service_sid" do
+      Application.put_env(
+        :mouth,
+        __MODULE__.TestTwilioSender,
+        adapter: Mouth.TwilioAdapter,
+        host: "localhost:4001",
+        messaging_service_sid: "MESSAGING_SERVICE_SID",
+        account_sid: "test_sid",
+        auth_token: "token"
+      )
+
+      msg = Message.new_message(@default_attrs)
+
+      assert TestTwilioSender.deliver(msg) ==
+               {:ok,
+                [
+                  status: "queued",
+                  id: "SM1da5893f540a4e86a8a0b6dd549de34a",
+                  datetime: "Fri, 16 Feb 2018 11:11:24 +0000"
+                ]}
+      assert_received {:twilio_call, [Body: _, To: _, MessagingServiceSid: "MESSAGING_SERVICE_SID"]}
+    end
+
     test "TestSender.deliver/1 works as expected with multiple numbers" do
       msg = Message.new_message(to: ["+380931234567", "+380931230987"], body: "test")
 
@@ -251,7 +287,7 @@ defmodule Mouth.TwilioAdapterTest do
     assert catch_error(TestTwilioSender.deliver(msg)) == %Mouth.NilRecipientsError{
              message: """
              All recipients were set to nil. Must specify at least one recipient.
-             Full message - %Mouth.Message{body: nil, meta: %{}, to: nil}
+             Full message - %Mouth.Message{body: nil, from: nil, meta: %{}, to: nil}
              """
            }
   end

@@ -56,6 +56,13 @@ defmodule Mouth.IP2SMSAdapterTest do
                {:ok, [status: "Accepted", id: "3806712345671174984921384", datetime: "Wed, 28 Mar 2007 12:35:00 +0300"]}
     end
 
+    test "TestSender.deliver/1 works as expected with overridden from" do
+      msg = Message.new_message(@default_attrs ++ [from: "someotherfrom"])
+
+      assert TestSMS2IPSender.deliver(msg) ==
+               {:ok, [status: "Accepted", id: "3806712345671174984921384", datetime: "Wed, 28 Mar 2007 12:35:00 +0300"]}
+    end
+
     test "TestSender.deliver/1 works as expected with multiple numbers" do
       msg = Message.new_message(to: ["+380931234567", "+380931230987"], body: "test")
 
@@ -207,7 +214,7 @@ defmodule Mouth.IP2SMSAdapterTest do
     assert catch_error(TestSMS2IPSender.deliver(msg)) == %Mouth.NilRecipientsError{
              message: """
              All recipients were set to nil. Must specify at least one recipient.
-             Full message - %Mouth.Message{body: nil, meta: %{}, to: nil}
+             Full message - %Mouth.Message{body: nil, from: nil, meta: %{}, to: nil}
              """
            }
   end

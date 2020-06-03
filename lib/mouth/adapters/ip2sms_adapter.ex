@@ -19,8 +19,8 @@ defmodule Mouth.IP2SMSAdapter do
   @negative_statuses ["Expired", "Deleted", "Undeliverable", "Rejected", "Unknown", "canceled"]
 
   @spec deliver(Mouth.Message.t(), %{}) :: {}
-  def deliver(%Mouth.Message{to: to, body: body} = _, config) do
-    process_request(config.gateway_url, compile_send_xml(to, body, config), config)
+  def deliver(%Mouth.Message{to: to, from: from, body: body} = _, config) do
+    process_request(config.gateway_url, compile_send_xml(to, from, body, config), config)
   end
 
   @spec status(String.t(), %{}) :: {}
@@ -104,10 +104,10 @@ defmodule Mouth.IP2SMSAdapter do
     |> Base.encode64()
   end
 
-  defp compile_send_xml(to, body, config) do
+  defp compile_send_xml(to, from, body, config) do
     """
     <message>
-    <service id="#{service_type(to)}" source="#{config.source_number}"/>
+    <service id="#{service_type(to)}" source="#{from || config.source_number}"/>
     #{to_line_xml(to)}
     <body content-type="text/plain">#{body}</body>
     </message>
